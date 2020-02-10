@@ -12,7 +12,8 @@
 */
 
 Route::get('/', function () {
-    return view('admin.welcome');
+    return view('admin/welcome');
 });
 
 Route::resource('alunos', 'AlunosController');
+Route::resource('salas', 'SalasController');

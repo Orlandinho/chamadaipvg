@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Aluno;
 use App\Sala;
+use App\Aluno;
 use Illuminate\Http\Request;
 
-class AlunosController extends Controller
+class SalasController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -25,9 +25,9 @@ class AlunosController extends Controller
      */
     public function create()
     {
-        $salas = Sala::all();
+        $salas = Sala::all()->sortBy('nome');
 
-        return view('admin.alunos.create', compact('salas'));
+        return view('admin/salas/create', compact('salas'));
     }
 
     /**
@@ -38,51 +38,65 @@ class AlunosController extends Controller
      */
     public function store(Request $request)
     {
-        return $request;
+        Sala::create($request->validate([
+            'nome' => 'required|min:3',
+            'descricao' => 'required|min:6'
+        ]));
+
+        return redirect('admin/salas/create');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Aluno  $aluno
+     * @param  \App\Sala  $sala
      * @return \Illuminate\Http\Response
      */
-    public function show(Aluno $aluno)
+    public function show(Sala $sala)
     {
-        //
+        $alunos = Aluno::all();
+
+        return view('admin/salas/show', compact('sala','alunos'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Aluno  $aluno
+     * @param  \App\Sala  $sala
      * @return \Illuminate\Http\Response
      */
-    public function edit(Aluno $aluno)
+    public function edit(Sala $sala)
     {
-        //
+        return view('admin/salas/edit', compact('sala'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Aluno  $aluno
+     * @param  \App\Sala  $sala
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Aluno $aluno)
+    public function update(Request $request, Sala $sala)
     {
-        //
+        $sala->update($request->validate([
+            'nome' => 'required|min:3',
+            'descricao' => 'required|min:6'
+        ]));
+
+        return redirect('admin/salas/create');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Aluno  $aluno
+     * @param  \App\Sala  $sala
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Aluno $aluno)
+    public function destroy(Sala $sala)
     {
-        //
+        $sala->delete();
+
+        return redirect('admin/salas/create');
     }
 }

@@ -11,7 +11,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Algum Texto</h1>
+            <h1>{{ $sala->nome }}</h1>
           </div>
         </div>
       </div><!-- /.container-fluid -->
@@ -21,9 +21,9 @@
     <section class="content">
 
       <!-- Default box -->
-      <div class="card col-sm-8 mx-auto">
+      <div class="card col-sm-10 mx-auto">
         <div class="card-header">
-          <h3 class="card-title">Title</h3>
+          <h3 class="card-title">Alunos da sala de {{ $sala->nome }}</h3>
 
           <div class="card-tools">
             <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -33,7 +33,13 @@
           </div>
         </div>
         <div class="card-body">
-          Start creating your amazing application!
+          <ul class="list-group">
+            @forelse($alunos as $aluno)
+              <li class="list-group-item d-flex align-items-center">{{ $aluno->nome }}</li>
+            @empty
+              <p class="mx-auto">Nenhum aluno nessa classe.</p>
+            @endforelse
+          </ul>
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
