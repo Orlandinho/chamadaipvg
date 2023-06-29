@@ -1,20 +1,10 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StudentController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -28,6 +18,18 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+//Route::resource('estudantes', StudentController::class)->middleware(['auth','verified']);
+
+Route::middleware(['auth','verified'])->group(function () {
+    Route::get('/estudantes', [StudentController::class, 'index'])->name('estudantes.index');
+    Route::get('/estudantes/criar', [StudentController::class, 'create'])->name('estudantes.create');
+    Route::post('/estudantes', [StudentController::class, 'store'])->name('estudantes.store');
+    Route::get('/estudantes/{student:slug}', [StudentController::class, 'show'])->name('estudantes.show');
+    Route::get('/estudantes/{student:slug}/editar', [StudentController::class, 'edit'])->name('estudantes.edit');
+    Route::patch('/estudantes/{student}', [StudentController::class, 'update'])->name('estudantes.update');
+    Route::delete('/estudantes/{student}', [StudentController::class, 'destroy'])->name('estudantes.destroy');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
