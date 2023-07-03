@@ -6,7 +6,6 @@ use App\Http\Requests\StoreStudentRequest;
 use App\Http\Resources\StudentResource;
 use App\Models\Student;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Inertia\Response;
 
 class StudentController extends Controller
@@ -28,22 +27,20 @@ class StudentController extends Controller
         $validated = $request->validated();
 
         try {
-            Student::create($validated);
+            $student = Student::create($validated);
 
         } catch (\Exception $e) {
             return back()->with('alert', [
-                'id' => rand(1, 10000),
                 'type' => 'failure',
                 'title' => 'Erro',
                 'message' => "O cadastro não pode ser realizado!"
             ]);
         }
 
-        return to_route('estudantes.index')->with('alert', [
-            'id' => rand(1, 10000),
+        return to_route('alunos.index')->with('alert', [
             'type' => 'success',
             'title' => 'Cadastro Realizado',
-            'message' => "O aluno/a {$validated['name']} foi cadastrado!"
+            'message' => "Os dados " . $this->studentGenderMessage($student) . " foram cadastrados!"
         ]);
     }
 
@@ -69,18 +66,16 @@ class StudentController extends Controller
             $student->update($validated);
         } catch (\Exception $e) {
             return back()->with('alert', [
-                'id' => rand(1, 10000),
                 'type' => 'failure',
                 'title' => 'Erro',
                 'message' => "A atualização não pode ser realizada!"
             ]);
         }
 
-        return to_route('estudantes.index')->with('alert', [
-            'id' => rand(1, 10000),
+        return to_route('alunos.index')->with('alert', [
             'type' => 'success',
             'title' => 'Atualização Realizada',
-            'message' => "Os dados do/a aluno/a {$validated['name']} foram atualizados!"
+            'message' => "Os dados " . $this->studentGenderMessage($student) . " foram atualizados!"
         ]);
     }
 
@@ -91,7 +86,6 @@ class StudentController extends Controller
             $student->delete();
         } catch (\Exception $e) {
             return back()->with('alert', [
-                'id' => rand(1, 10000),
                 'type' => 'failure',
                 'title' => 'Erro',
                 'message' => "A exclusão não pode ser realizada!"
@@ -99,10 +93,14 @@ class StudentController extends Controller
         }
 
         return back()->with('alert', [
-            'id' => rand(1, 10000),
             'type' => 'success',
             'title' => 'Exclusão Realizada',
-            'message' => "Os dados do/a aluno/a $studentName foram excluídos!"
+            'message' => "Os dados " . $this->studentGenderMessage($student) . " foram excluídos!"
         ]);
+    }
+
+    protected function studentGenderMessage(Student $student): string
+    {
+        return $student->gender === 'm' ? "do aluno {$student->name}" : "da aluna {$student->name}";
     }
 }

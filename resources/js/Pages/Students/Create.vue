@@ -4,16 +4,20 @@ import TextInput from '@/Components/TextInput.vue'
 import InputLabel from '@/Components/InputLabel.vue'
 import InputError from '@/Components/InputError.vue'
 import PrimaryButton from '@/Components/PrimaryButton.vue'
-import { Head, useForm } from '@inertiajs/vue3'
+import { Head, useForm, usePage } from '@inertiajs/vue3'
 import { vMaska } from 'maska'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { alert } from '@/DataShare/store.js'
+import Radio from '@/Components/Radio.vue'
+
+const toast = computed(() => usePage().props.alert)
 
 const placeholderText = ref('')
 
 const form = useForm({
     name: '',
     dob: '',
+    gender: '',
     email: '',
     contact:'',
     address: '',
@@ -52,8 +56,13 @@ const onlyNumbers = (e) => {
 }
 
 const submit = () => {
-    form.post(route('estudantes.store'), {
-        onSuccess: () => form.reset(),
+    form.post(route('alunos.store'), {
+        onSuccess: () => {
+            alert.id = Math.floor(Math.random() * 10000)
+            alert.type = toast.value.type
+            alert.title = toast.value.title
+            alert.message = toast.value.message
+        },
     })
 }
 </script>
@@ -239,6 +248,30 @@ const submit = () => {
 
                                             <InputError
                                                 :message="form.errors.city"
+                                                class="mt-2" />
+                                        </div>
+                                    </div>
+
+                                    <div class="sm:col-span-3">
+                                        <div>
+                                            <InputLabel value="Gênero" />
+
+                                            <fieldset class="border mt-2 border-gray-300 px-2 py-2 rounded-lg">
+                                                <legend class="sr-only">Notification method</legend>
+                                                <div class="space-y-4 sm:flex sm:items-center sm:space-x-6 sm:space-y-0">
+                                                    <div class="flex items-center">
+                                                        <input id="f" name="feminino" type="radio" v-model="form.gender" value='f' class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600" />
+                                                        <label for="f" class="ml-3 block text-sm font-medium leading-6 text-gray-900">Feminino</label>
+                                                    </div>
+                                                    <div class="flex items-center">
+                                                        <input id="m" name="masculino" type="radio" v-model="form.gender" value='m' class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600" />
+                                                        <label for="m" class="ml-3 block text-sm font-medium leading-6 text-gray-900">Masculino</label>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+
+                                            <InputError
+                                                :message="form.errors.gender"
                                                 class="mt-2" />
                                         </div>
                                     </div>

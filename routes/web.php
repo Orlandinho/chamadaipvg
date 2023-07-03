@@ -19,16 +19,14 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-//Route::resource('estudantes', StudentController::class)->middleware(['auth','verified']);
-
 Route::middleware(['auth','verified'])->group(function () {
-    Route::get('/estudantes', [StudentController::class, 'index'])->name('estudantes.index');
-    Route::get('/estudantes/criar', [StudentController::class, 'create'])->name('estudantes.create');
-    Route::post('/estudantes', [StudentController::class, 'store'])->name('estudantes.store');
-    Route::get('/estudantes/{student:slug}', [StudentController::class, 'show'])->name('estudantes.show');
-    Route::get('/estudantes/{student:slug}/editar', [StudentController::class, 'edit'])->name('estudantes.edit');
-    Route::patch('/estudantes/{student}', [StudentController::class, 'update'])->name('estudantes.update');
-    Route::delete('/estudantes/{student}', [StudentController::class, 'destroy'])->name('estudantes.destroy');
+    Route::get('/alunos', [StudentController::class, 'index'])->name('alunos.index');
+    Route::get('/alunos/criar', [StudentController::class, 'create'])->name('alunos.create');
+    Route::post('/alunos', [StudentController::class, 'store'])->name('alunos.store');
+    Route::get('/alunos/{student:slug}', [StudentController::class, 'show'])->name('alunos.show');
+    Route::get('/alunos/{student:slug}/editar', [StudentController::class, 'edit'])->name('alunos.edit');
+    Route::patch('/alunos/{student}', [StudentController::class, 'update'])->name('alunos.update');
+    Route::delete('/alunos/{student}', [StudentController::class, 'destroy'])->name('alunos.destroy');
 });
 
 Route::middleware('auth')->group(function () {

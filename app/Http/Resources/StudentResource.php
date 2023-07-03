@@ -15,10 +15,9 @@ class StudentResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        //return parent::toArray($request);
-
         return [
             'id' => $this->id,
+            'gender' => $this->gender,
             'name' => $this->name,
             'slug' => $this->slug,
             'email' => $this->email,
@@ -26,12 +25,13 @@ class StudentResource extends JsonResource
                 ? now()->diffInYears($this->dob) . ' anos'
                 : now()->diffInYears($this->dob) . ' ano',
             'birthday' => Carbon::createFromFormat('Y-m-d', $this->dob)->format('d/m/Y'),
-            'dob' => $this->when($request->routeIs(['estudantes.edit']), $this->dob),
-            'contact' => $this->when($request->routeIs(['estudantes.show','estudantes.edit']), $this->contact),
-            'address' => $this->when($request->routeIs(['estudantes.show','estudantes.edit']), $this->address),
-            'district' => $this->when($request->routeIs(['estudantes.show','estudantes.edit']), $this->district),
-            'city' => $this->when($request->routeIs(['estudantes.show','estudantes.edit']), $this->city),
-            'zipcode' => $this->when($request->routeIs(['estudantes.show','estudantes.edit']), $this->zipcode)
+            'dob' => $this->when($request->routeIs(['alunos.edit']), $this->dob),
+            'genderMessage' => $this->when($request->routeIs(['alunos.show','alunos.edit','alunos.index']), $this->gender === 'm' ? "do aluno $this->name " : "da aluna $this->name"),
+            'contact' => $this->when($request->routeIs(['alunos.show','alunos.edit']), $this->contact),
+            'address' => $this->when($request->routeIs(['alunos.show','alunos.edit']), $this->address),
+            'district' => $this->when($request->routeIs(['alunos.show','alunos.edit']), $this->district),
+            'city' => $this->when($request->routeIs(['alunos.show','alunos.edit']), $this->city),
+            'zipcode' => $this->when($request->routeIs(['alunos.show','alunos.edit']), $this->zipcode)
         ];
     }
 }

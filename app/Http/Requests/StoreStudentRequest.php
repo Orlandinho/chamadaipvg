@@ -41,6 +41,7 @@ class StoreStudentRequest extends FormRequest
     {
         return [
             'name' => ['required','max:255'],
+            'gender' => ['required','string','in:f,m'],
             'slug' => ['required','max:255'],
             'email' => ['required','max:255','email'],
             'dob' => ['required','date_format:Y-m-d','before_or_equal:' . now()->format('Y-m-d')],

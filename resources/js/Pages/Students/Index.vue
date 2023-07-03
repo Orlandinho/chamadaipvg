@@ -1,20 +1,33 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import DeleteDialog from '@/Components/DeleteDialog.vue'
+import Pagination from '@/Components/Pagination.vue'
 import { PencilSquareIcon, TrashIcon } from '@heroicons/vue/24/solid/index.js'
-import { Head, Link, useForm } from '@inertiajs/vue3'
-import { ref } from 'vue'
+import { Head, Link, useForm, usePage } from '@inertiajs/vue3'
+import { computed, ref } from 'vue'
+import { alert } from '@/DataShare/store.js'
 
 const modalDialog = ref(null)
+
+const toast = computed(() => usePage().props.alert)
 
 const props = defineProps({
     students: Object,
 })
 
+console.log(props.students.meta)
+
 const form = useForm({})
 
 const destroy = (id) => {
-    form.delete(route('estudantes.destroy', id))
+    form.delete(route('alunos.destroy', id), {
+        onSuccess: () => {
+            alert.id = Math.floor(Math.random() * 10000)
+            alert.type = toast.value.type
+            alert.title = toast.value.title
+            alert.message = toast.value.message
+        }
+    })
 }
 </script>
 
@@ -31,15 +44,15 @@ const destroy = (id) => {
                                 <div class="sm:flex-auto">
                                     <h1
                                         class="text-base font-semibold leading-6 text-gray-900">
-                                        Estudantes
+                                        Alunos
                                     </h1>
                                     <p class="mt-2 text-sm text-gray-700">
-                                        Listagem de todos os estudantes da escola dominical
+                                        Listagem de todos os alunos da escola dominical
                                     </p>
                                 </div>
                                 <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
                                     <Link
-                                        :href="route('estudantes.create')"
+                                        :href="route('alunos.create')"
                                         class="block rounded-md bg-red-500 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-red-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
                                         type="button">
                                         Novo Estudante
@@ -47,39 +60,36 @@ const destroy = (id) => {
                                 </div>
                             </div>
                             <div class="mt-4 flow-root">
-                                <div class="-mx-4 -my-2 sm:-mx-6 lg:-mx-8">
+                                <div class="-mx-4 -my-2 sm:-mx-6 lg:-mx-8 max-h-96 overflow-y-auto">
                                     <div
-                                        class="inline-block min-w-full py-2 align-middle max-h-96 overflow-y-auto">
-                                        <table
-                                            class="min-w-full border-separate border-spacing-0">
+                                        class="inline-block min-w-full py-2 align-middle">
+                                        <table class="min-w-full border-separate border-spacing-0">
                                             <thead>
                                             <tr>
                                                 <th
-                                                    class="sticky top-0 z-10 border-b border-gray-300 bg-white bg-opacity-75 py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter sm:pl-6 lg:pl-8"
+                                                    class="sticky top-0 z-10 border-b border-gray-300 bg-white bg-opacity-75 py-3.5 pl-4 pr-3 text-left text-sm font-semibold backdrop-blur backdrop-filter sm:pl-6 lg:pl-8"
                                                     scope="col">
                                                     Nome
                                                 </th>
                                                 <th
-                                                    class="sticky top-0 z-10 hidden border-b border-gray-300 bg-white bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter sm:table-cell"
+                                                    class="sticky top-0 z-10 border-b border-gray-300 bg-white bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold backdrop-blur backdrop-filter sm:table-cell"
                                                     scope="col">
                                                     E-mail
                                                 </th>
                                                 <th
-                                                    class="sticky top-0 z-10 hidden border-b border-gray-300 bg-white bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter lg:table-cell"
+                                                    class="sticky top-0 z-10 border-b border-gray-300 bg-white bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold backdrop-blur backdrop-filter lg:table-cell"
                                                     scope="col">
                                                     Data de Nascimento
                                                 </th>
                                                 <th
-                                                    class="sticky top-0 z-10 border-b border-gray-300 bg-white bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold text-gray-900 backdrop-blur backdrop-filter"
+                                                    class="sticky top-0 z-10 border-b border-gray-300 bg-white bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold backdrop-blur backdrop-filter"
                                                     scope="col">
                                                     Idade
                                                 </th>
                                                 <th
-                                                    class="sticky top-0 z-10 border-b border-gray-300 bg-white bg-opacity-75 py-3.5 pl-3 pr-4 backdrop-blur backdrop-filter sm:pr-6 lg:pr-8"
+                                                    class="sticky top-0 z-10 border-b border-gray-300 bg-white bg-opacity-75 py-3.5 pl-3 pr-4 text-left text-sm font-semibold backdrop-blur backdrop-filter sm:pr-6 lg:pr-8"
                                                     scope="col">
-                                                        <span class="sr-only"
-                                                        >Opções</span
-                                                        >
+                                                        Ações
                                                 </th>
                                             </tr>
                                             </thead>
@@ -101,7 +111,7 @@ const destroy = (id) => {
                                                     <Link
                                                         :href="
                                                                 route(
-                                                                    'estudantes.show',
+                                                                    'alunos.show',
                                                                     student.slug
                                                                 )
                                                             "
@@ -149,7 +159,7 @@ const destroy = (id) => {
                                                         ]">
                                                     <div class='flex space-x-2'>
                                                         <Link
-                                                            :href="route('estudantes.edit', student.slug)"
+                                                            :href="route('alunos.edit', student.slug)"
                                                         >
                                                         <PencilSquareIcon
                                                             class='h-5 w-5 text-green-500 hover:text-green-400' />
@@ -170,6 +180,7 @@ const destroy = (id) => {
                         </div>
                     </div>
                 </div>
+                <Pagination :pages='students.meta' class='mt-4'/>
             </div>
         </div>
     </AuthenticatedLayout>

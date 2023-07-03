@@ -17,10 +17,13 @@ class StudentFactory extends Factory
      */
     public function definition(): array
     {
+        $gender = fake()->randomElement(['male','female']);
+        $name = fake()->firstName($gender) . ' ' . fake()->lastName();
         return [
-            'name' => fake()->firstName . ' ' . fake()->lastName(),
-            'slug' => Str::slug(fake()->firstName . ' ' . fake()->lastName(), '-'),
-            'email' => fake()->safeEmail(),
+            'name' => $name,
+            'gender' => $gender === 'male' ? 'm' : 'f',
+            'slug' => Str::slug($name, '-'),
+            'email' => Str::slug($name, '.') . '@example.com',
             'dob' => fake()->dateTimeBetween('-75 years', '-1 year'),
             'contact' => '(11) 9' . rand(1000, 9999) . '-' . rand(1000, 9999),
             'address' => fake()->streetAddress(),

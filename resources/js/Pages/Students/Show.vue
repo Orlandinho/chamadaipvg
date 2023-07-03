@@ -21,7 +21,7 @@ const firstName = computed(() => props.student.name.split(' ')[0])
                         <div class="px-4 sm:px-0">
                             <h3
                                 class="text-base font-semibold leading-7 text-gray-900">
-                                Informações do/a estudante {{ student.name }}
+                                Informações {{ student.genderMessage }}
                             </h3>
                             <p
                                 class="mt-1 max-w-2xl text-sm leading-6 text-red-400">

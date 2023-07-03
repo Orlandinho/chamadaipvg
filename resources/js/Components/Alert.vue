@@ -8,31 +8,10 @@ import {
 } from '@heroicons/vue/24/outline'
 import { XMarkIcon } from '@heroicons/vue/20/solid'
 import { alert } from '@/DataShare/store.js'
-import { usePage } from '@inertiajs/vue3'
 
 let show = ref(false)
 
 let toast = ref()
-
-const message = computed(() => usePage().props.alert)
-
-if(message.value) {
-    toast = message
-    show.value = true
-    setTimeout(() => {
-        show.value = false
-    }, 5000)
-}
-
-watch(message, (val) => {
-    toast.value = val.value
-    show.value = true
-    setTimeout(() => {
-        show.value = false
-    }, 5000)
-}, {
-    deep: true
-})
 
 watch(
     alert,
