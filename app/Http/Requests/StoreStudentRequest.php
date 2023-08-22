@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Models\Student;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class StoreStudentRequest extends FormRequest
 {
@@ -40,6 +41,7 @@ class StoreStudentRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'classroom_id' => ['nullable', Rule::exists('classrooms', 'id')],
             'name' => ['required','max:255'],
             'gender' => ['required','string','in:f,m'],
             'slug' => ['required','max:255'],
@@ -49,7 +51,7 @@ class StoreStudentRequest extends FormRequest
             'address' => ['required','max:255'],
             'district' => ['required','max:255'],
             'city' => ['required','max:255'],
-            'zipcode' => ['required','regex:/^(\d){8}$/'],
+            'zipcode' => ['required','regex:/^(\d){8}$/']
         ];
     }
 }

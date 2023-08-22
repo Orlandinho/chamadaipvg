@@ -69,7 +69,7 @@ const informativeMessage = computed(
                     <Link
                         :class="
                             pages.current_page > 1
-                                ? 'hover:bg-zinc-400 hover:text-white text-zinc-600'
+                                ? 'hover:bg-zinc-500 hover:text-white text-zinc-600'
                                 : 'text-zinc-400'
                         "
                         :disabled="pages.current_page <= 1"
@@ -79,7 +79,7 @@ const informativeMessage = computed(
                             })
                         "
                         as="button"
-                        class="relative inline-flex items-center rounded-l-md px-2 py-2 bg-white ring-1 ring-inset ring-zinc-500 focus:z-20 focus:outline-offset-0"
+                        class="relative inline-flex items-center rounded-l-md px-2 py-2 bg-white ring-1 ring-inset ring-zinc-600 focus:z-20 focus:outline-offset-0"
                         preserve-scroll
                         type="button">
                         <span class="sr-only">Previous</span>
@@ -93,19 +93,19 @@ const informativeMessage = computed(
                         <Link
                             :class="
                                 pages.current_page === page
-                                    ? 'z-10 bg-zinc-500 text-white'
+                                    ? 'z-10 bg-zinc-600 text-white'
                                     : 'bg-white text-zinc-600'
                             "
                             :href="route('alunos.index', { page: page })"
                             aria-current="page"
-                            class="relative z-10 inline-flex items-center px-4 py-2 text-sm font-medium focus:z-20 border border-zinc-500 hover:bg-zinc-400 hover:text-white"
+                            class="relative z-10 inline-flex items-center px-4 py-2 text-sm font-medium focus:z-20 border border-zinc-600 hover:bg-zinc-500 hover:text-white"
                             preserve-scroll
                             v-html="page" />
                     </template>
                     <Link
                         :class="
                             pages.current_page !== pages.last_page
-                                ? 'hover:bg-zinc-400 hover:text-white text-zinc-600'
+                                ? 'hover:bg-zinc-500 hover:text-white text-zinc-600'
                                 : 'text-zinc-400'
                         "
                         :disabled="pages.current_page === pages.last_page"
@@ -115,7 +115,7 @@ const informativeMessage = computed(
                             })
                         "
                         as="button"
-                        class="relative inline-flex items-center rounded-r-md px-2 py-2 bg-white ring-1 ring-inset ring-zinc-500 focus:z-20 focus:outline-offset-0"
+                        class="relative inline-flex items-center rounded-r-md px-2 py-2 bg-white ring-1 ring-inset ring-zinc-600 focus:z-20 focus:outline-offset-0"
                         preserve-scroll
                         type="button">
                         <span class="sr-only">Next</span>

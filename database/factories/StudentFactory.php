@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Classroom;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -22,6 +23,7 @@ class StudentFactory extends Factory
         return [
             'name' => $name,
             'gender' => $gender === 'male' ? 'm' : 'f',
+            'classroom_id' => Classroom::all()->random()->id,
             'slug' => Str::slug($name, '-'),
             'email' => Str::slug($name, '.') . '@example.com',
             'dob' => fake()->dateTimeBetween('-75 years', '-1 year'),
@@ -29,7 +31,7 @@ class StudentFactory extends Factory
             'address' => fake()->streetAddress(),
             'district' => array_rand(array_flip(['Jd ', 'Vila ', 'Pq ', 'São ']), 1) . fake()->country(),
             'city' => fake()->city(),
-            'zipcode' => '0' . rand(1001, 9990) . rand(01, 99) . '0'
+            'zipcode' => '0' . rand(1001, 9990) . rand(10, 99) . '0'
         ];
     }
 }

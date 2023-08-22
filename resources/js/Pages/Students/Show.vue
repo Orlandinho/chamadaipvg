@@ -114,6 +114,16 @@ const firstName = computed(() => props.student.name.split(' ')[0])
                                         {{ student.zipcode }}
                                     </dd>
                                 </div>
+                                <div class="px-4 py-6 sm:col-span-1 sm:px-0">
+                                    <dt
+                                        class="text-sm font-medium leading-6 text-gray-900">
+                                        Classe
+                                    </dt>
+                                    <dd
+                                        class="mt-1 text-sm leading-6 text-gray-700 sm:mt-2">
+                                        {{ student.classroom.name }}
+                                    </dd>
+                                </div>
                             </dl>
                         </div>
                     </div>

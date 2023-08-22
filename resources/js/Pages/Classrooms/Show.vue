@@ -12,7 +12,8 @@ const modalDialog = ref(null)
 const toast = computed(() => usePage().props.alert)
 
 const props = defineProps({
-    students: Object,
+    classroom: Object,
+    students: Object
 })
 
 const form = useForm({})
@@ -30,7 +31,7 @@ const destroy = (id) => {
 </script>
 
 <template>
-    <Head title="Estudantes" />
+    <Head :title="classroom.name" />
 
     <AuthenticatedLayout>
         <div class="py-4">
@@ -42,10 +43,10 @@ const destroy = (id) => {
                                 <div class="sm:flex-auto">
                                     <h1
                                         class="text-base font-semibold leading-6 text-gray-900">
-                                        Alunos
+                                        {{ classroom.name }}
                                     </h1>
                                     <p class="mt-2 text-sm text-gray-700">
-                                        Listagem de todos os alunos da escola dominical
+                                        Lista dos alunos da classe {{ classroom.name}}
                                     </p>
                                 </div>
                                 <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
@@ -72,11 +73,6 @@ const destroy = (id) => {
                                                 <th
                                                     class="sticky top-0 z-10 border-b border-gray-300 bg-white bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold backdrop-blur backdrop-filter sm:table-cell"
                                                     scope="col">
-                                                    Classe
-                                                </th>
-                                                <th
-                                                    class="sticky top-0 z-10 border-b border-gray-300 bg-white bg-opacity-75 px-3 py-3.5 text-left text-sm font-semibold backdrop-blur backdrop-filter sm:table-cell"
-                                                    scope="col">
                                                     E-mail
                                                 </th>
                                                 <th
@@ -92,7 +88,7 @@ const destroy = (id) => {
                                                 <th
                                                     class="sticky top-0 z-10 border-b border-gray-300 bg-white bg-opacity-75 py-3.5 pl-3 pr-4 text-left text-sm font-semibold backdrop-blur backdrop-filter sm:pr-6 lg:pr-8"
                                                     scope="col">
-                                                        Ações
+                                                    Ações
                                                 </th>
                                             </tr>
                                             </thead>
@@ -100,7 +96,7 @@ const destroy = (id) => {
                                             <tr
                                                 v-for="(
                                                         student, index
-                                                    ) in students.data"
+                                                    ) in students"
                                                 :key="index"
                                                 class="even:bg-zinc-100 hover:bg-zinc-200">
                                                 <td
@@ -121,16 +117,6 @@ const destroy = (id) => {
                                                         class="hover:underline hover:text-red-500">
                                                         {{ student.name }}
                                                     </Link>
-                                                </td>
-                                                <td
-                                                    :class="[
-                                                            student.id !==
-                                                            student.length - 1
-                                                                ? 'border-b border-gray-200'
-                                                                : '',
-                                                            'whitespace-nowrap hidden px-3 py-4 text-sm text-gray-500 sm:table-cell',
-                                                        ]">
-                                                    {{ student.classroom ? student.classroom.name : '-----------' }}
                                                 </td>
                                                 <td
                                                     :class="[
@@ -174,8 +160,8 @@ const destroy = (id) => {
                                                         <Link
                                                             :href="route('alunos.edit', student.slug)"
                                                         >
-                                                        <PencilSquareIcon
-                                                            class='h-5 w-5 text-green-500 hover:text-green-400' />
+                                                            <PencilSquareIcon
+                                                                class='h-5 w-5 text-green-500 hover:text-green-400' />
                                                         </Link
                                                         >
                                                         <button @click="modalDialog.openModal(student)">
@@ -193,7 +179,7 @@ const destroy = (id) => {
                         </div>
                     </div>
                 </div>
-                <Pagination :pages='students.meta' class='mt-4'/>
+<!--                <Pagination :pages='students.meta' class='mt-4'/>-->
             </div>
         </div>
     </AuthenticatedLayout>

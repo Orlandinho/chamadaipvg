@@ -1,5 +1,6 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
+import SelectClassroom from '@/Components/SelectClassroom.vue'
 import TextInput from '@/Components/TextInput.vue'
 import InputLabel from '@/Components/InputLabel.vue'
 import InputError from '@/Components/InputError.vue'
@@ -8,7 +9,10 @@ import { Head, useForm, usePage } from '@inertiajs/vue3'
 import { vMaska } from 'maska'
 import { computed, ref } from 'vue'
 import { alert } from '@/DataShare/store.js'
-import Radio from '@/Components/Radio.vue'
+
+const props = defineProps({
+    classrooms: Object
+})
 
 const toast = computed(() => usePage().props.alert)
 
@@ -24,6 +28,7 @@ const form = useForm({
     district: '',
     city: '',
     zipcode: '',
+    classroom_id: ''
 })
 
 
@@ -260,11 +265,11 @@ const submit = () => {
                                                 <legend class="sr-only">Notification method</legend>
                                                 <div class="space-y-4 sm:flex sm:items-center sm:space-x-6 sm:space-y-0">
                                                     <div class="flex items-center">
-                                                        <input id="f" name="feminino" type="radio" v-model="form.gender" value='f' class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600" />
+                                                        <input id="f" name="gender" type="radio" v-model="form.gender" value='f' class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600" />
                                                         <label for="f" class="ml-3 block text-sm font-medium leading-6 text-gray-900">Feminino</label>
                                                     </div>
                                                     <div class="flex items-center">
-                                                        <input id="m" name="masculino" type="radio" v-model="form.gender" value='m' class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600" />
+                                                        <input id="m" name="gender" type="radio" v-model="form.gender" value='m' class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600" />
                                                         <label for="m" class="ml-3 block text-sm font-medium leading-6 text-gray-900">Masculino</label>
                                                     </div>
                                                 </div>
@@ -274,6 +279,11 @@ const submit = () => {
                                                 :message="form.errors.gender"
                                                 class="mt-2" />
                                         </div>
+                                    </div>
+
+                                    <div class='sm:col-span-3'>
+                                        <SelectClassroom :classrooms='classrooms' v-model='form.classroom_id' />
+                                        <InputError :message='form.errors.classroom' class='mt-2' />
                                     </div>
                                 </div>
                             </div>

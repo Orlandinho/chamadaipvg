@@ -8,6 +8,7 @@ import { Head, useForm, usePage } from '@inertiajs/vue3'
 import { vMaska } from 'maska'
 import { computed, ref } from 'vue'
 import { alert } from '@/DataShare/store.js'
+import SelectClassroom from '@/Components/SelectClassroom.vue'
 
 const props = defineProps({
     student: Object
@@ -28,9 +29,8 @@ const form = useForm({
     district: props.student.district,
     city: props.student.city,
     zipcode: props.student.zipcode,
+    classroom_id: props.student.classroom?.id ?? ''
 })
-
-
 
 const fillAddress = async () => {
     if (form.zipcode.length === 8) {
@@ -261,7 +261,7 @@ const submit = () => {
                                             <InputLabel value="Gênero" />
 
                                             <fieldset class="border mt-2 border-gray-300 px-2 py-2 rounded-lg">
-                                                <legend class="sr-only">Notification method</legend>
+                                                <legend class="sr-only">Seleção de gênero</legend>
                                                 <div class="space-y-4 sm:flex sm:items-center sm:space-x-6 sm:space-y-0">
                                                     <div class="flex items-center">
                                                         <input id="f" name="feminino" :checked="form.gender === 'f'" type="radio" v-model="form.gender" value='f' class="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600" />
@@ -278,6 +278,11 @@ const submit = () => {
                                                 :message="form.errors.gender"
                                                 class="mt-2" />
                                         </div>
+                                    </div>
+
+                                    <div class='sm:col-span-3'>
+                                        <SelectClassroom :classrooms='student.classrooms' v-model='form.classroom_id' />
+                                        <InputError :message='form.errors.classroom_id' class='mt-2' />
                                     </div>
                                 </div>
                             </div>

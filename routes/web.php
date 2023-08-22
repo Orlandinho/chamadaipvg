@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StudentController;
 use Illuminate\Foundation\Application;
@@ -19,15 +20,30 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware(['auth','verified'])->group(function () {
-    Route::get('/alunos', [StudentController::class, 'index'])->name('alunos.index');
-    Route::get('/alunos/criar', [StudentController::class, 'create'])->name('alunos.create');
-    Route::post('/alunos', [StudentController::class, 'store'])->name('alunos.store');
-    Route::get('/alunos/{student:slug}', [StudentController::class, 'show'])->name('alunos.show');
-    Route::get('/alunos/{student:slug}/editar', [StudentController::class, 'edit'])->name('alunos.edit');
-    Route::patch('/alunos/{student}', [StudentController::class, 'update'])->name('alunos.update');
-    Route::delete('/alunos/{student}', [StudentController::class, 'destroy'])->name('alunos.destroy');
+Route::controller(StudentController::class)
+    ->middleware(['auth'])
+    ->group(function () {
+    Route::get('/alunos', 'index')->name('alunos.index');
+    Route::get('/aluno/criar', 'create')->name('alunos.create');
+    Route::post('/alunos', 'store')->name('alunos.store');
+    Route::get('/aluno/{student:slug}', 'show')->name('alunos.show');
+    Route::get('/aluno/{student:slug}/editar', 'edit')->name('alunos.edit');
+    Route::patch('/alunos/{student}', 'update')->name('alunos.update');
+    Route::delete('/alunos/{student}', 'destroy')->name('alunos.destroy');
 });
+
+Route::controller(ClassroomController::class)
+    ->middleware(['auth'])
+    ->group(function () {
+    Route::get('/classes', 'index')->name('classes.index');
+    Route::get('/classe/criar', 'create')->name('classes.create');
+    Route::post('/classes', 'store')->name('classes.store');
+    Route::get('/classe/{classroom:slug}', 'show')->name('classes.show');
+    Route::get('/classe/{classroom:slug}/editar', 'edit')->name('classes.edit');
+    Route::patch('/classe/{classroom}', 'update')->name('classes.update');
+    Route::delete('/classe/{classroom}', 'destroy')->name('classes.destroy');
+});
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Classroom;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -18,15 +19,17 @@ class StudentResource extends JsonResource
         return [
             'id' => $this->id,
             'gender' => $this->gender,
+            'classroom' => $this->whenLoaded('classroom'),
+            'classrooms' => $this->when($request->routeIs(['alunos.edit']), Classroom::select('id','name')->get()),
             'name' => $this->name,
-            'slug' => $this->slug,
+            'slug' => $this->when($request->routeIs(['alunos.index','classes.show']), $this->slug),
             'email' => $this->email,
             'age' => now()->diffInYears($this->dob) > 1
                 ? now()->diffInYears($this->dob) . ' anos'
                 : now()->diffInYears($this->dob) . ' ano',
-            'birthday' => Carbon::createFromFormat('Y-m-d', $this->dob)->format('d/m/Y'),
+            'birthday' => $this->when($request->routeIs(['alunos.index','alunos.show','classes.show']), Carbon::createFromFormat('Y-m-d', $this->dob)->format('d/m/Y')),
             'dob' => $this->when($request->routeIs(['alunos.edit']), $this->dob),
-            'genderMessage' => $this->when($request->routeIs(['alunos.show','alunos.edit','alunos.index']), $this->gender === 'm' ? "do aluno $this->name " : "da aluna $this->name"),
+            'genderMessage' => $this->gender === 'm' ? "do aluno $this->name " : "da aluna $this->name",
             'contact' => $this->when($request->routeIs(['alunos.show','alunos.edit']), $this->contact),
             'address' => $this->when($request->routeIs(['alunos.show','alunos.edit']), $this->address),
             'district' => $this->when($request->routeIs(['alunos.show','alunos.edit']), $this->district),

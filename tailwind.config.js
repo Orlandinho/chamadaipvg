@@ -10,6 +10,10 @@ export default {
         './resources/js/**/*.vue',
     ],
 
+    safelist:[
+        { pattern: /(text|border|ring|bg)-(red|orange|yellow|lime|green|teal|blue|indigo|purple|fuchsia|pink|rose)-500/ }
+    ],
+
     theme: {
         extend: {
             fontFamily: {
